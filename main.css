@@ -212,7 +212,6 @@ header {
     top: 0;
     left: 0;
     z-index: 0;
-    background-color: red;
 }
 
 .menu-none {
@@ -389,6 +388,7 @@ header {
     margin-top: 5rem;
     height: 95%;
     width: auto;
+    background-color: black;
 }
 
 
