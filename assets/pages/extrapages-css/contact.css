@@ -1,0 +1,350 @@
+/* ------ SETUP SECTION ------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #CCC5B9;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+body {
+    background-color: black;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* ------ FONTS SECTION ------- */
+
+
+@font-face {
+    font-family: HK_MODULAR;
+    src: url("fonts/Ignis\ et\ Glacies\ Sharp\ Bold.ttf");
+}
+@font-face {
+    font-family: NORWESTER;
+    src: url("fonts/norwester.otf");
+}
+@font-face {
+    font-family: Glacial-Indifference;
+    src: url("fonts/GlacialIndifference-Bold.otf");
+}
+
+/* ------ COLOR PALETS SECTION ------- */
+
+
+/* 
+color orange: #EB5E28 
+color black: #252422
+color gray: #403D39
+color cream: #CCC5B9
+color #CCC5B9: #FFFCF2
+https://coolors.co/palette/fffcf2-ccc5b9-403d39-252422-eb5e28*/
+
+
+/* ------ SIDE MENU SECTION ------- */
+
+
+
+.side-menu-close {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    backdrop-filter: blur(20px);
+    position: fixed;
+    top: 0px;
+    left: -20%;
+    z-index: 10;
+    height: 100dvh;
+    width: 20%;
+    transition: left 0.5s ease-in-out;
+    border-inline-end: 2px solid #CCC5B9;
+}
+
+.side-menu-open {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    backdrop-filter: blur(20px);
+    position: fixed;
+    top: 0px;
+    left: 0%;
+    z-index: 10;
+    height: 100dvh;
+    width: 20%;
+    transition: left 0.5s ease-in-out;
+    border-inline-end: 2px solid #CCC5B9;
+}
+
+
+.menu-profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 8%;
+    width: 90%;
+    margin-top: 1em;
+    border: 2px solid #CCC5B9;
+    border-radius: 30px;
+    font-size: 2rem;
+    font-family: NORWESTER;
+    text-transform: capitalize;
+}
+
+.menu-profile::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border: 2px solid #CCC5B9;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    z-index: -1;
+    padding: 2%;
+    border-radius: 30px;
+}
+
+.list-wrapper {
+
+    display: flex;
+    border-inline: 1px solid #CCC5B9;
+    height: 40%;
+    width: 90%;
+    margin-top:2rem;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.list {
+    cursor: pointer;
+    padding-left: 1rem;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 18%;
+    width: 90%;
+    font-family: Glacial-Indifference;
+    border-block: 2px solid #CCC5B9;
+    text-transform: capitalize;
+}
+
+.list:hover {
+    background-color: #36332e;
+    color: #CCC5B9;
+}
+
+.menu-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: small;
+    height: auto;
+    width: 100%;
+    border-block: 2px solid #CCC5B9;
+    position: absolute;
+    bottom: -2px;
+}
+
+.menu-footer-bottom {
+    justify-content: space-around;
+    display: flex;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.icons {
+    margin-top: 2px;
+    font-size: 1rem;
+    display: flex;
+    text-decoration: none;
+    font-family: NORWESTER;
+}
+
+/* ------ HEADER SECTION ------- */
+
+
+header {
+    height: 5rem;
+    width: 100vw;
+    margin-top: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    padding: .15em 2rem;
+    z-index: 5;
+}
+.header-wrapper {
+    box-shadow: 0px 0px 10px 2px #403D39;
+    backdrop-filter: blur(20px);
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 2px solid #403D39;
+    width: 100%;
+    border-radius: 1rem;
+    padding-left: 1rem;
+    justify-content: space-between;
+}
+
+/* --------------------------------------- */
+/* --------------------------------------- */
+.hide-submenu {
+    display: none;
+}
+.hide-menu {
+    height: 100dvh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.menu-none {
+    visibility: none;
+}
+
+.menu {
+    cursor: grab;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    border: 2px solid #403D39;
+    width: 3em;
+    height: 3em;
+    position: relative;
+}
+.menu::before {
+    content: "";
+    position: absolute;
+    padding: 0.2rem;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+    filter: opacity(50%) blur(5px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    z-index: -10;
+    background-image: linear-gradient(lightblue, pink);
+}
+
+.menu i {
+    padding: 1rem;
+}
+.menu i:hover {
+    color: black;
+}
+
+.menu:hover {
+    background: #403D39;
+    color: #252422;
+    filter: opacity(50%);
+}
+
+
+/* --------------------------------------- */
+/* --------------------------------------- */
+
+
+
+.contact-page {
+    text-decoration: none;
+    cursor: grab;
+    display: flex;
+    position: relative;
+    color: #CCC5B9;
+    right: 4rem;
+    align-items: center;
+    font-family: HK_MODULAR;
+    padding: 1rem;
+    width: fit-content;
+    height: 3em;
+    border-radius: 10px;
+    border: 2px solid #403D39;
+}
+
+.contact-page::after {
+    content: "";
+    position: absolute;
+    padding: 0.2rem;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+    filter: opacity(50%) blur(5px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    z-index: -10;
+    background-image: linear-gradient(lightblue, pink);
+}
+
+.contact-page:hover {
+    background: #403D39;
+    color: #252422;
+    filter: opacity(50%);
+}
+/* --------------------------------------- */
+/* --------------------------------------- */
+
+#dropdown {
+    cursor: grab;
+    font-size: 1.5rem;
+    display: flex;
+    position: absolute;
+    color: #CCC5B9;
+    right: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-left: 1rem;
+    width: 2rem;
+    height: 3rem;
+    border-radius: 10px;
+    border: 2px solid #403D39;
+}
+
+#dropdown::after {
+    content: "";
+    position: absolute;
+    padding: 0.2rem;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+    filter: opacity(50%) blur(5px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    z-index: -10;
+    background-image: linear-gradient(lightblue, pink);
+}
+
+#dropdown:hover {
+    background: #403D39;
+    color: #252422;
+    filter: opacity(50%);
+}
+
+
+/* ------ FORM AREA SECTION ------- */
+
+.main-wrapper {
+    height: 100dvh;
+    width: 100%;
+    display: flex;
+}
+
