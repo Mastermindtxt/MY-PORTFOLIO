@@ -388,7 +388,6 @@ header {
     margin-top: 5rem;
     height: 95%;
     width: auto;
-    background-color: black;
 }
 
 
@@ -399,7 +398,7 @@ header {
 .tech-bio {
     height: 150dvh;
     width: 100%;
-    border-block: 2px solid white;
+    border-block: 2px solid #403D39;
 
 }
 
