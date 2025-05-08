@@ -9,7 +9,7 @@
 
 html {
     scroll-behavior: smooth;
-    font-size: 16px; /* Base font size for responsive units */
+    font-size: 16px; 
 }
 body {
     background-color: black;
@@ -18,7 +18,7 @@ body {
     min-height: 100vh;
 }
 
-body::-webkit-scrollbar {
+::-webkit-scrollbar {
     display: none;
 }
 
@@ -59,7 +59,7 @@ https://coolors.co/palette/fffcf2-ccc5b9-403d39-252422-eb5e28*/
     display: flex;
     align-items: center;
     flex-direction: column;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(30px);
     position: fixed;
     top: 0px;
     left: -20%;
@@ -76,7 +76,7 @@ https://coolors.co/palette/fffcf2-ccc5b9-403d39-252422-eb5e28*/
     display: flex;
     align-items: center;
     flex-direction: column;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(30px);
     position: fixed;
     top: 0px;
     left: 0%;
@@ -245,8 +245,8 @@ header {
 }
 
 .header-wrapper {
-    box-shadow: 0px 0px 10px 2px #403D39; /* Preserving original shadow color */
-    backdrop-filter: blur(10px);
+    box-shadow: 0px 0px 10px 2px #403D39; 
+    backdrop-filter: blur(50px);
     position: relative;
     display: flex;
     align-items: center;
@@ -461,16 +461,141 @@ header {
 
 
 .tech-bio {
-    height: 150dvh;
+    height:fit-content;
     width: 100%;
-    border-block: 2px solid #403D39;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.scroll {
+    position: relative;
+    display: flex;
+    width: 90%;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #fff 20%, #fff 80%, transparent)
+}
+
+.scroll div {
+    font-family: NORWESTER;
+    font-size: 3rem;
+    white-space: nowrap;
+    animation: scroll var(--time) linear infinite;
+    animation-delay: calc(var(--time)*-1);
 
 }
 
-/* ------ RESPONSIVE STYLES ------- */
+.scroll div:nth-child(2) {
+    animation: scroll2 var(--time) linear infinite;
+    animation-delay: calc(var(--time)/-2);
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes scroll2 {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-200%);
+    }
+}
+
+.scroll div span {
+    display: inline-flex;
+    margin: 10px;
+    background: #1f1f1e;
+    color: #CCC5B9;
+    padding: 5px 10px;
+    border-radius: 10px;
+    transition: 0.5s;
+    padding-inline: 1em;
+}
+
+.scroll div span:hover {
+    background: #ad461d;
+    cursor: pointer;
+}
+
+
+.scroll-2 {
+    position: relative;
+    display: flex;
+    width: 90%;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, #fff 20%, #fff 80%, transparent)
+}
+
+.scroll-2 div {
+    font-family: NORWESTER;
+    font-size: 3rem;
+    white-space: nowrap;
+    animation: scroll-1 var(--time) linear infinite;
+    animation-delay: calc(var(--time)*-1);
+
+}
+
+.scroll-2 div:nth-child(2) {
+    animation: scroll-2 var(--time) linear infinite;
+    animation-delay: calc(var(--time)/-2);
+}
+
+@keyframes scroll-1 {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes scroll-2 {
+    0% {
+        transform: translateX(-200%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.scroll-2 div span {
+    display: inline-flex;
+    margin: 10px;
+    background: #1f1f1e;
+    color: #CCC5B9;
+    padding: 5px 10px;
+    border-radius: 10px;
+    transition: 0.5s;
+    padding-inline: 1em;
+}
+
+.scroll-2 div span:hover {
+    background: #ad461d;
+    cursor: pointer;
+}
+ 
+
+
+
+
+
+
+
 
 /* Mobile Devices */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 777px) {
     html {
         font-size: 16px; /* Increased base size for mobile */
     }
@@ -485,6 +610,7 @@ header {
     .header-wrapper {
         padding: 0 0.8rem;
         border-radius: 12px;
+        background-color: black;
         box-shadow: 0px 0px 8px 1px #403D39; /* Keep original color but adjust size */
     }
     
@@ -552,21 +678,21 @@ header {
     .firstview {
         flex-direction: column;
         justify-content: center;
-        padding: 1rem;
+        padding: 0.2rem;
         height: auto;
-        min-height: 100vh;
+        min-height: 70dvh;
     }
     
     .first-view-wrapper {
         height: auto;
         width: 100%;
-        padding: 1rem;
+        padding: 0.5rem;
         margin-top: 5rem;
         text-align: center;
     }
     
     .first-view-wrapper .heading {
-        font-size: 2.3rem; /* Increased from 2rem */
+        font-size: 2.5rem; /* Increased from 2rem */
     }
     
     .first-view-wrapper .bio {
@@ -587,7 +713,7 @@ header {
 }
 
 /* Tablet Devices */
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
+@media only screen and (min-width: 778px) and (max-width: 1024px) {
     html {
         font-size: 17px; /* Added base size for tablet */
     }
@@ -630,6 +756,11 @@ header {
     /* First view adjustments */
     .firstview {
         padding: 1.5rem;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0.2rem;
+        height: auto;
+        min-height: 70dvh;
     }
     
     .first-view-wrapper {
