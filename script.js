@@ -7,6 +7,9 @@ const resume = document.querySelector("#resume")
 const career = document.querySelector("#career")
 const social = document.querySelector("#social")
 const plans = document.querySelector("#plans")
+const projectWrapper = document.querySelector(".project-wrapper")
+const project = document.querySelectorAll(".project")
+const projectImage = document.querySelector(".project-image")
 
 // ------ CHECK FOR MOBILE/TABLET DEVICES ------- //
 const isMobile = () => {
@@ -316,3 +319,287 @@ if (menuProfile) {
         menuProfile.style.borderColor = "#CCC5B9";
     });
 }
+
+// --- Project Section Animations and Expand/Shrink Logic ---
+
+const projects = document.querySelectorAll('.project');
+const expandBtns = document.querySelectorAll('.project-expand-btn');
+
+// Scroll animation for project cards
+function handleProjectScroll() {
+    const triggerBottom = window.innerHeight * 0.85;
+    projects.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+        if (cardTop < triggerBottom) {
+            card.classList.add('in-view');
+        }
+    });
+}
+window.addEventListener('scroll', handleProjectScroll);
+document.addEventListener('DOMContentLoaded', handleProjectScroll);
+
+// Expand/Shrink logic
+let expandedIndex = null;
+projects.forEach((card, idx) => {
+    card.addEventListener('click', function (e) {
+        // Prevent button click from toggling card
+        if (e.target.classList.contains('project-expand-btn')) return;
+        if (card.classList.contains('expanded')) {
+            // Collapse if already expanded
+            card.classList.remove('expanded');
+            projects.forEach((c) => c.classList.remove('shrunk'));
+            expandedIndex = null;
+        } else {
+            // Expand this card, shrink others
+            projects.forEach((c, i) => {
+                if (i === idx) {
+                    c.classList.add('expanded');
+                } else {
+                    c.classList.remove('expanded');
+                    c.classList.add('shrunk');
+                }
+            });
+            expandedIndex = idx;
+        }
+    });
+});
+
+// When expanded, show button and divider, and handle layout
+projects.forEach((card, idx) => {
+    const btn = card.querySelector('.project-expand-btn');
+    const divider = card.querySelector('.project-divider');
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.location.href = 'assets/pages/projects.html';
+    });
+    // Observe class changes to show/hide button/divider
+    const observer = new MutationObserver(() => {
+        if (card.classList.contains('expanded')) {
+            btn.style.display = 'block';
+            divider.style.display = 'block';
+        } else {
+            btn.style.display = 'none';
+            divider.style.display = 'none';
+        }
+    });
+    observer.observe(card, { attributes: true, attributeFilter: ['class'] });
+});
+
+// Prevent text disorder during transitions by forcing min-width/height
+// projects.forEach(card => {
+//     card.style.minHeight = '100%';
+//     card.style.minWidth = '90%';
+// });
+
+// --- New Project Area Expand/Collapse Logic ---
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.project-card');
+    cards.forEach(card => {
+        const btn = card.querySelector('.project-card-expand');
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            // Simple expand: toggle a class, or show a modal (for now, alert)
+            alert(card.querySelector('.project-card-title').textContent + '\n' + card.querySelector('.project-card-desc').textContent);
+        });
+    });
+});
+
+// --- Roadmap Scroll Animation ---
+document.addEventListener('DOMContentLoaded', function() {
+    const roadmapSection = document.querySelector('.roadmap-area');
+    const svg = document.querySelector('.roadmap-svg');
+    const path = document.getElementById('roadmap-path');
+    const milestones = document.querySelectorAll('.roadmap-milestone');
+    if (!roadmapSection || !svg || !path || milestones.length === 0) return;
+
+    // Prepare SVG path for animation
+    const pathLength = path.getTotalLength();
+    path.style.strokeDasharray = pathLength;
+    path.style.strokeDashoffset = pathLength;
+
+    // Position milestones along the path
+    function positionMilestones() {
+        milestones.forEach(milestone => {
+            const progress = parseFloat(milestone.getAttribute('data-progress'));
+            // Get point along the path
+            const point = path.getPointAtLength(pathLength * progress);
+            // SVG viewBox is 1000x220, container is relative
+            const container = svg.getBoundingClientRect();
+            const xPercent = (point.x / 1000) * 100;
+            const yPercent = (point.y / 220) * 100;
+            milestone.style.left = xPercent + '%';
+            milestone.style.top = yPercent + '%';
+        });
+    }
+
+    // Animate the roadmap
+    function animateRoadmap() {
+        const rect = roadmapSection.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        let progress = 0;
+        if (rect.top < windowHeight && rect.bottom > 0) {
+            progress = (windowHeight - rect.top) / (rect.height + windowHeight * 0.5);
+            progress = Math.max(0, Math.min(1, progress));
+        }
+        // Animate the road
+        const drawLength = pathLength * progress;
+        path.style.strokeDashoffset = pathLength - drawLength;
+
+        // Animate milestones
+        milestones.forEach(milestone => {
+            const mProgress = parseFloat(milestone.getAttribute('data-progress'));
+            milestone.classList.remove('completed', 'reached');
+            if (progress >= mProgress) {
+                milestone.classList.add('reached');
+            }
+            // Completed = not the first, and passed
+            if (mProgress > 0 && progress >= mProgress) {
+                milestone.classList.add('completed');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', animateRoadmap);
+    window.addEventListener('resize', () => {
+        positionMilestones();
+        animateRoadmap();
+    });
+    positionMilestones();
+    animateRoadmap();
+});
+
+// --- Dual Roadmap Scroll Animation ---
+document.addEventListener('DOMContentLoaded', function() {
+  const roadmapSection = document.querySelector('.dual-roadmap-area');
+  const svgComputer = document.getElementById('road-computer');
+  const svgJapanese = document.getElementById('road-japanese');
+  const milestones = document.querySelectorAll('.roadmap-milestone');
+  if (!roadmapSection || !svgComputer || !svgJapanese || milestones.length === 0) return;
+
+  // Prepare SVG paths for animation
+  const pathLengthComputer = svgComputer.getTotalLength();
+  svgComputer.style.strokeDasharray = pathLengthComputer;
+  svgComputer.style.strokeDashoffset = pathLengthComputer;
+
+  const pathLengthJapanese = svgJapanese.getTotalLength();
+  svgJapanese.style.strokeDasharray = pathLengthJapanese;
+  svgJapanese.style.strokeDashoffset = pathLengthJapanese;
+
+  // Position milestones along the path
+  function positionMilestones() {
+    milestones.forEach(milestone => {
+      const progress = parseFloat(milestone.getAttribute('data-progress'));
+      const track = milestone.getAttribute('data-track');
+      let path, pathLength, viewBoxY;
+      if (track === 'computer') {
+        path = svgComputer;
+        pathLength = pathLengthComputer;
+        viewBoxY = 120;
+      } else {
+        path = svgJapanese;
+        pathLength = pathLengthJapanese;
+        viewBoxY = 120;
+      }
+      const point = path.getPointAtLength(pathLength * progress);
+      const xPercent = (point.x / 1000) * 100;
+      const yPercent = (point.y / viewBoxY) * 100;
+      milestone.style.left = xPercent + '%';
+      milestone.style.top = yPercent + '%';
+    });
+  }
+
+  // Animate the roadmap
+  function animateRoadmap() {
+    const rect = roadmapSection.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    let progress = 0;
+    if (rect.top < windowHeight && rect.bottom > 0) {
+      progress = (windowHeight - rect.top) / (rect.height + windowHeight * 0.5);
+      progress = Math.max(0, Math.min(1, progress));
+    }
+    // Animate the roads
+    svgComputer.style.strokeDashoffset = pathLengthComputer - pathLengthComputer * progress;
+    svgJapanese.style.strokeDashoffset = pathLengthJapanese - pathLengthJapanese * progress;
+
+    // Animate milestones
+    milestones.forEach(milestone => {
+      const mProgress = parseFloat(milestone.getAttribute('data-progress'));
+      milestone.classList.remove('completed', 'reached');
+      if (progress >= mProgress) {
+        milestone.classList.add('reached');
+      }
+      if (mProgress > 0 && progress >= mProgress) {
+        milestone.classList.add('completed');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', animateRoadmap);
+  window.addEventListener('resize', () => {
+    positionMilestones();
+    animateRoadmap();
+  });
+  positionMilestones();
+  animateRoadmap();
+});
+
+// --- VERTICAL ROADMAP SCROLL ANIMATION ---
+document.addEventListener('DOMContentLoaded', function() {
+  const roadmapSection = document.querySelector('.vertical-roadmap-area');
+  const timeline = document.querySelector('.vertical-roadmap-svg line');
+  const milestones = document.querySelectorAll('.vertical-roadmap-milestone');
+  if (!roadmapSection || !timeline || milestones.length === 0) return;
+
+  // Get the SVG line length (vertical, y2 - y1)
+  const svg = document.querySelector('.vertical-roadmap-svg');
+  const svgHeight = svg.viewBox.baseVal.height;
+  const lineLength = timeline.y2.baseVal.value - timeline.y1.baseVal.value;
+
+  // Position milestones along the timeline
+  function positionMilestones() {
+    milestones.forEach(milestone => {
+      const progress = parseFloat(milestone.getAttribute('data-progress'));
+      const y = svgHeight * progress;
+      milestone.style.top = `calc(${y / svgHeight * 100}% - 0.5em)`;
+    });
+  }
+
+  // Animate the roadmap
+  function animateRoadmap() {
+    const rect = roadmapSection.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    let progress = 0;
+    if (rect.top < windowHeight && rect.bottom > 0) {
+      progress = (windowHeight - rect.top) / (rect.height + windowHeight * 0.5);
+      progress = Math.max(0, Math.min(1, progress));
+    }
+    // Animate the timeline (stroke-dashoffset)
+    const dashArray = 42;
+    const dashGap = 32;
+    const totalDash = dashArray + dashGap;
+    const dashes = Math.ceil(lineLength / totalDash);
+    const visibleLength = lineLength * progress;
+    timeline.setAttribute('stroke-dasharray', `${dashArray} ${dashGap}`);
+    timeline.setAttribute('stroke-dashoffset', lineLength - visibleLength);
+
+    // Animate milestones
+    milestones.forEach(milestone => {
+      const mProgress = parseFloat(milestone.getAttribute('data-progress'));
+      milestone.classList.remove('active', 'completed');
+      if (progress >= mProgress) {
+        milestone.classList.add('active');
+      }
+      if (progress > mProgress + 0.05) {
+        milestone.classList.add('completed');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', animateRoadmap);
+  window.addEventListener('resize', () => {
+    positionMilestones();
+    animateRoadmap();
+  });
+  positionMilestones();
+  animateRoadmap();
+});
